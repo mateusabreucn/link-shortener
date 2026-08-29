@@ -1,0 +1,18 @@
+# Dependências
+node_modules
+.pnpm-store
+
+# Variáveis de ambiente (Segredos)
+.env
+.env.*
+!.env.example
+
+# Builds e saídas
+dist
+.output
+.vercel
+
+# Logs e testes
+npm-debug.log*
+pnpm-debug.log*
+coverage
