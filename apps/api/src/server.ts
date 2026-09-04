@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import healthCheckRoutes from "./routes/healthCheck";
+import linksRoutes from "./routes/links";
 import {
   fastifySwaggerSchema,
   fastifySwaggerUiSchema,
@@ -14,6 +15,7 @@ const fastify = Fastify({
 fastify.register(fastifySwagger, fastifySwaggerSchema);
 fastify.register(fastifySwaggerUi, fastifySwaggerUiSchema);
 fastify.register(healthCheckRoutes);
+fastify.register(linksRoutes);
 
 fastify.listen({ port: 3333 }, function (err, address) {
   if (err) {
