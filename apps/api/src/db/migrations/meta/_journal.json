@@ -8,6 +8,13 @@
       "when": 1788176836934,
       "tag": "0000_handy_spirit",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788620935721,
+      "tag": "0001_light_vance_astro",
+      "breakpoints": true
     }
   ]
 }

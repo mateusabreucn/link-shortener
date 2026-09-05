@@ -14,21 +14,17 @@ export async function createShortLink(
   const { originalUrl, code } = req.body;
 
   try {
-    const nextId =
-      (
-        await db
-          .select({ id: links.id })
-          .from(links)
-          .orderBy(desc(links.id))
-          .limit(1)
-      )[0].id + 1;
+    const [{ id: currentId }] = await db
+      .insert(links)
+      .values({ originalUrl })
+      .returning({ id: links.id });
 
     let finalCode: string;
 
     if (code) {
       finalCode = code;
     } else {
-      finalCode = generateCode(nextId);
+      finalCode = generateCode(currentId);
     }
 
     const existingCode = await db
@@ -37,15 +33,17 @@ export async function createShortLink(
       .where(eq(links.code, finalCode));
 
     if (existingCode.length > 0) {
+      await db.delete(links).where(eq(links.id, currentId));
       return res.status(409).send({ message: "Code already in use" });
     }
 
-    const [newLink] = await db
-      .insert(links)
-      .values({ originalUrl, code: finalCode })
-      .returning();
+    const [{ code: savedCode }] = await db
+      .update(links)
+      .set({ code: finalCode })
+      .where(eq(links.id, currentId))
+      .returning({ code: links.code });
 
-    return res.status(201).send({ code: newLink.code });
+    return res.status(201).send({ code: savedCode });
   } catch (error) {
     console.error(error);
 
