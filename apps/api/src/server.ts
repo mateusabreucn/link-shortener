@@ -7,6 +7,7 @@ import {
   fastifySwaggerSchema,
   fastifySwaggerUiSchema,
 } from "./schemas/swagger/fastifySwagger";
+import { fastifyErrorHandler } from "./utils/fastifyErrorHandler";
 
 const fastify = Fastify({
   logger: true,
@@ -16,6 +17,8 @@ fastify.register(fastifySwagger, fastifySwaggerSchema);
 fastify.register(fastifySwaggerUi, fastifySwaggerUiSchema);
 fastify.register(healthCheckRoutes);
 fastify.register(linksRoutes);
+
+fastify.setErrorHandler(fastifyErrorHandler);
 
 fastify.listen({ port: 3333 }, function (err, address) {
   if (err) {
