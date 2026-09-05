@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 export default function generateCode(id: number): string {
   return encodeToBase62(scrambleId(id));
 }
@@ -18,5 +20,6 @@ function encodeToBase62(id: number) {
 }
 
 function scrambleId(id: number) {
-  return id ^ 0x5f3759df;
+  const mask = Number(process.env.XOR_MASK);
+  return id ^ mask;
 }
