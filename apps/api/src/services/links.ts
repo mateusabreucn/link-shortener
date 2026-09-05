@@ -56,14 +56,14 @@ export async function redirectToOriginalLink(
 ) {
   const code = req.params.code;
 
-  const [{ originalUrl: originalUrl }] = await db
+  const [link] = await db
     .select({ originalUrl: links.originalUrl })
     .from(links)
     .where(eq(links.code, code));
 
-  if (!originalUrl) {
+  if (!link) {
     throw new CodeNotFoundError();
   }
 
-  return res.redirect(originalUrl);
+  return res.redirect(link.originalUrl);
 }
