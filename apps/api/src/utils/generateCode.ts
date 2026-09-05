@@ -7,14 +7,14 @@ function encodeToBase62(id: number) {
     "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
   let n = id;
-  let result: string = "";
+  let result = "";
 
   while (n > 0) {
     const remainder = n % 62;
     result = alphabet[remainder] + result;
     n = Math.floor(n / 62);
   }
-  return result;
+  return result || "0";
 }
 
 function scrambleId(id: number) {
