@@ -4,7 +4,7 @@ const fastifySwaggerSchema = {
     info: {
       title: "Link Shortener",
       description: "Link Shortener from your mate",
-      version: "0.0.1",
+      version: "0.1.0",
     },
   },
 };
