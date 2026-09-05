@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { CreateLinkBody, RedirectParams } from "../types/links";
 import { db } from "../db";
 import { links } from "../db/schema";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import generateCode from "../utils/generateCode";
 import {
   CodeAlreadyInUseError,
@@ -57,9 +57,10 @@ export async function redirectToOriginalLink(
   const code = req.params.code;
 
   const [link] = await db
-    .select({ originalUrl: links.originalUrl })
-    .from(links)
-    .where(eq(links.code, code));
+    .update(links)
+    .set({ clickCount: sql`${links.clickCount} + 1` })
+    .where(eq(links.code, code))
+    .returning({ originalUrl: links.originalUrl });
 
   if (!link) {
     throw new CodeNotFoundError();
